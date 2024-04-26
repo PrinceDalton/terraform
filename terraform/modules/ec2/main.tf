@@ -6,27 +6,27 @@ resource "aws_instance" "example" {
   # depends_on = [
   #   aws_security_group.instance_sg
   # ]
-  ami           = "ami-080e1f13689e07408" # Update with your desired AMI ID
+  ami           = "ami-02e2b55c9e895603c" # Update with your desired AMI ID
   instance_type = "t2.micro"              # Update with your desired instance type
-  key_name      = "jenkins-key"           # Update with your key pair name
+  key_name      = "opk"           # Update with your key pair name
 
   // Assigning the security group to the instance
   security_groups = [aws_security_group.instance_sg.name]
 
   tags = {
-    Name = "example-instance" # Update with your desired instance name
+    Name = "Jenkins" # Update with your desired instance name
   }
 
   # Adding storage
   root_block_device {
-    volume_size = 20    # Size of the root volume in gigabytes
+    volume_size = 10    # Size of the root volume in gigabytes
     volume_type = "gp2" # Type of volume (e.g., gp2, standard, io1)
   }
 }
 
 
 resource "aws_security_group" "instance_sg" {
-  name        = "instance_sg"
+  name        = "launch_wizard_1"
   description = "Security group for EC2 instance"
 
   // Define ingress rule to allow SSH access from anywhere
@@ -35,6 +35,14 @@ resource "aws_security_group" "instance_sg" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Allow SSH access from anywhere
+  }
+
+    # New ingress rule to allow HTTP traffic on port 8080 from anywhere
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Allow HTTP traffic from anywhere
   }
 
   // Define egress rule to allow all outbound traffic

@@ -1,19 +1,19 @@
 pipeline {
     agent any
     environment {
-        DOCKER_HUB_REGISTRY="devopseasylearning"
-        DOCKER_CREDENTIAL_ID = 'del-docker-hub-auth'
+        DOCKER_HUB_REGISTRY="prinsoo"
+        DOCKER_CREDENTIAL_ID = 'docker-cred'
     }
     parameters {
-        string(name: 'BRANCH_NAME', defaultValue: 'master', description: '')
+        string(name: 'BRANCH_NAME', defaultValue: 'main', description: '')
         string(name: 'IMAGE_TAG', defaultValue: 'latest', description: '')
     }
     stages {
         stage('Clone Repository') {
             steps {
                 script {
-                    git credentialsId: 'devops-tia-repo',
-                        url: 'git@github.com:devopstia/s6.git',
+                    git credentialsId: 'github-ssh',
+                        url: 'https://github.com/PrinceDalton/terraform.git',
                         branch: "${params.BRANCH_NAME}"
                 }
             }
