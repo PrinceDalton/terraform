@@ -40,14 +40,36 @@ pipeline {
                 }
             }
         }
+        // stage('Pushing into DockerHub') {
+        //     steps {
+        //         script {
+        //             sh """
+        //                 docker push ${env.DOCKER_HUB_REGISTRY}/jenkins-master-slave:${params.IMAGE_TAG}
+        //                 docker rmi -f $(docker images | grep '${env.DOCKER_HUB_REGISTRY}' | awk '{print $3}')
+        //             """
+        //         }
+        //     }
+        // }
+
         stage('Pushing into DockerHub') {
             steps {
                 script {
-                    sh """
+                    // Attempt to push the Docker image, with error handling
+                    def dockerPushStatus = sh(script: """
                         docker push ${env.DOCKER_HUB_REGISTRY}/jenkins-master-slave:${params.IMAGE_TAG}
+                    """, returnStatus: true)
+        
+                    if (dockerPushStatus != 0) {
+                        error("Failed to push Docker image to ${env.DOCKER_HUB_REGISTRY}/jenkins-master-slave:${params.IMAGE_TAG}")
+                    }
+        
+                    // Cleanup Docker images after a successful push
+                    sh """
+                        docker rmi -f \$(docker images | grep '${env.DOCKER_HUB_REGISTRY}/jenkins-master-slave' | awk '{print \$3}')
                     """
                 }
             }
         }
+
     }
 }
