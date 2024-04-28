@@ -14,7 +14,7 @@ resource "aws_instance" "example" {
   # depends_on = [
   #   aws_security_group.instance_sg
   # ]
-  ami           = "ami-05110239bdadf9038" # Update with your desired AMI ID
+  ami           = "ami-04b70fa74e45c3917" # Update with your desired AMI ID
   instance_type = "t2.micro"              # Update with your desired instance type
   key_name      = "opk"           # Update with your key pair name
 
