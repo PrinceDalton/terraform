@@ -40,7 +40,7 @@ pipeline {
         stage('Configure AWS CLI') {
             steps {
                 script {
-                    dir("${WORKSPACE}/terraform/modules/ec2") {
+                    dir("${WORKSPACE}/terraform/modules/ec2-slave") {
                     withCredentials([
                             [$class: 'AmazonWebServicesCredentialsBinding',
                             accessKeyVariable: 'AWS_ACCESS_KEY_ID',
