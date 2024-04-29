@@ -95,4 +95,23 @@ pipeline {
             }
         }
     }
+
+    post {
+   
+   success {
+      slackSend (channel: '#opk-jenkins', color: 'good', message: "SUCCESSFUL: Application Job 'jenkins-master-slave [${params.IMAGE_TAG}]' (${env.BUILD_URL})")
+    }
+
+    unstable {
+      slackSend (channel: '#opk-jenkins', color: 'warning', message: "UNSTABLE: Application Job 'jenkins-master-slave [${params.IMAGE_TAG}]' (${env.BUILD_URL})")
+    }
+
+    failure {
+      slackSend (channel: '#opk-jenkins', color: '#FF0000', message: "FAILURE: Application Job 'jenkins-master-slave [${params.IMAGE_TAG}]' (${env.BUILD_URL})")
+    }
+   
+    cleanup {
+      deleteDir()
+    }
+    }
 }
