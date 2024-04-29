@@ -40,17 +40,6 @@ pipeline {
                 }
             }
         }
-        // stage('Pushing into DockerHub') {
-        //     steps {
-        //         script {
-        //             sh """
-        //                 docker push ${env.DOCKER_HUB_REGISTRY}/jenkins-master-slave:${params.IMAGE_TAG}
-        //                 docker rmi -f $(docker images | grep '${env.DOCKER_HUB_REGISTRY}' | awk '{print $3}')
-        //             """
-        //         }
-        //     }
-        // }
-
         stage('Pushing into DockerHub') {
             steps {
                 script {
@@ -71,5 +60,24 @@ pipeline {
             }
         }
 
+    }
+
+    post {
+   
+   success {
+      slackSend (channel: '#opk-jenkins', color: 'good', message: "SUCCESSFUL: Application Job 'jenkins-master-slave [${params.IMAGE_TAG}]' (${env.BUILD_URL})")
+    }
+
+    unstable {
+      slackSend (channel: '#opk-jenkins', color: 'warning', message: "UNSTABLE: Application Job 'jenkins-master-slave [${params.IMAGE_TAG}]' (${env.BUILD_URL})")
+    }
+
+    failure {
+      slackSend (channel: '#opk-jenkins', color: '#FF0000', message: "FAILURE: Application Job 'jenkins-master-slave [${params.IMAGE_TAG}]' (${env.BUILD_URL})")
+    }
+   
+    cleanup {
+      deleteDir()
+    }
     }
 }
