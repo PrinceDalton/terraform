@@ -1,6 +1,6 @@
 # Create S3 bucket
 resource "aws_s3_bucket" "terraform_state_bucket" {
-  bucket = "s6-terraform-s3-backend" # replace with your desired bucket 
+  bucket = "opk-bucket" # replace with your desired bucket 
 }
 
 # resource "aws_s3_bucket_acl" "example" {
